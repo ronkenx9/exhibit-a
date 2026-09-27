@@ -218,7 +218,13 @@ textarea { font-family: var(--mono); font-size: 12px; resize: vertical; }
 @media (max-width: 720px) {
   .top { padding: 12px 16px; }
   .tag { display: none; }
-  .shell { grid-template-columns: 1fr; }
+  .shell { grid-template-columns: minmax(0, 1fr); }
+  .run { grid-column: auto; }
+  .pill { font-size: 11px; white-space: nowrap; }
+  #howBtn { display: none; }
+  .file-head .meta { font-size: 11px; }
+  .file-head .claim { font-size: 17px; }
+  .ex pre { font-size: 11.5px; }
   .inbox { border-right: 0; border-bottom: 1px solid var(--rule); padding: 14px 16px; }
   #caseList { flex-direction: row; overflow-x: auto; }
   .case-item { min-width: 220px; }
