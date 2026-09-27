@@ -54,7 +54,25 @@ function daysLeft(c) {
 
 // ---------- inbox ----------
 
+function renderLedger() {
+  const rs = state.cases.map((c) => [c, state.results[c.id]]).filter(([, r]) => r);
+  if (!rs.length) { $("#ledger").innerHTML = `<div class="k">Recovery ledger</div><div class="row" style="margin-top:6px"><span>Build a case to see what comes back to you.</span></div>`; return; }
+  const fights = rs.filter(([, r]) => r.verdict.decision === "FIGHT");
+  const accepts = rs.filter(([, r]) => r.verdict.decision === "ACCEPT");
+  const disputed = fights.reduce((a, [c]) => a + c.amount, 0);
+  const expected = fights.reduce((a, [, r]) => a + r.verdict.expectedRecovery, 0);
+  const saved = accepts.length * accepts[0]?.[1].verdict.networkFee || 0;
+  const cost = rs.reduce((a, [, r]) => a + r.totalCost, 0);
+  $("#ledger").innerHTML = `<div class="k">Recovery ledger</div>
+    <div class="big">${money(expected * 0.85)}</div>
+    <div class="row"><span>expected back to you</span><b>after 15% fee</b></div>
+    <div class="row"><span>${fights.length} contested</span><b>${money(disputed)} at stake</b></div>
+    <div class="row"><span>${accepts.length} advised not to fight</span><b>${money(saved)} fees saved</b></div>
+    <div class="row"><span>SERV compute</span><b>$${cost.toFixed(4)}</b></div>`;
+}
+
 function renderInbox() {
+  renderLedger();
   $("#caseList").innerHTML = state.cases.map((c) => {
     const res = state.results[c.id];
     const badge = res ? `<span class="badge ${res.verdict.decision.toLowerCase()}">${res.verdict.decision}</span>` : `<span class="badge">${daysLeft(c)}d left</span>`;
@@ -151,7 +169,7 @@ function flashExhibit(id) {
 const seenSteps = new Set();
 function renderSteps() {
   $("#steps").innerHTML = state.steps.map((s) => `
-    <li class="step ${s.status} ${seenSteps.has(s.id) ? "" : "fresh"}"><span class="dot"></span><div><div class="t">${esc(s.title)}</div><div class="d">${esc(s.detail || "")}</div></div></li>`).join("");
+    <li class="step ${s.status} ${seenSteps.has(s.id) ? "" : "fresh"}"><span class="dot"></span><div><div class="t">${esc(s.title)}${s.status === "running" ? `<span class="elapsed" data-since="${s.since}"></span>` : ""}</div><div class="d">${esc(s.detail || "")}</div></div></li>`).join("");
   state.steps.forEach((s) => seenSteps.add(s.id));
 }
 
@@ -302,7 +320,7 @@ async function run() {
         const ev = JSON.parse(line);
         if (ev.type === "step") {
           const i = state.steps.findIndex((s) => s.id === ev.id);
-          const s = { id: ev.id, status: ev.status, title: ev.title, detail: ev.detail };
+          const s = { id: ev.id, status: ev.status, title: ev.title, detail: ev.detail, since: i >= 0 && state.steps[i].since ? state.steps[i].since : Date.now() };
           if (i >= 0) state.steps[i] = s; else state.steps.push(s);
           renderSteps();
           if (ev.id === "screen") { partial.injections = ev.data.injections; renderExhibits(partial); }
@@ -426,5 +444,7 @@ function createCase() {
   renderInbox();
   select(c.id);
 }
+
+setInterval(() => document.querySelectorAll(".elapsed[data-since]").forEach((el) => (el.textContent = `${((Date.now() - +el.dataset.since) / 1000).toFixed(0)}s`)), 250);
 
 boot();

@@ -247,3 +247,12 @@ textarea { font-family: var(--mono); font-size: 12px; resize: vertical; }
   .doc { border: 0; box-shadow: none; padding: 0; max-width: none; }
   .struck, .struck-why { display: none; }
 }
+
+.ledger { margin: 16px 2px 0; border: 1px solid var(--rule); border-radius: var(--radius); background: var(--card); padding: 12px; }
+.ledger .k { font: 600 10.5px var(--sans); letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-3); }
+.ledger .big { font: 400 30px/1.1 var(--serif); margin: 4px 0 8px; }
+.ledger .row { display: flex; justify-content: space-between; gap: 8px; font: 12px/1.35 var(--sans); color: var(--ink-2); padding: 3px 0; }
+.ledger .row b { white-space: nowrap; font-family: var(--mono); font-size: 11.5px; }
+.ledger .row b { font-weight: 500; color: var(--ink); }
+.elapsed { font: 11px var(--mono); color: var(--ink-3); margin-left: 6px; }
+@media (max-width: 720px) { .ledger { display: none; } }
