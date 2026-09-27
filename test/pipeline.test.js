@@ -50,3 +50,8 @@ test("verdict: full coverage fights, missing required accepts", () => {
   assert.equal(v.decision, "ACCEPT");
   assert.deepEqual(v.missingRequired, ["prior_undisputed", "identifier_match"]);
 });
+
+test("splitter does not break inside a quotation", () => {
+  const s = splitSentences("She wrote, “Got it Tuesday, thanks! Already dialed in.” [E3] Next point [E2].");
+  assert.deepEqual(s, ["She wrote, “Got it Tuesday, thanks! Already dialed in.” [E3]", "Next point [E2]."]);
+});
