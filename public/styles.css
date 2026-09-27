@@ -240,7 +240,9 @@ textarea { font-family: var(--mono); font-size: 12px; resize: vertical; }
 }
 @media print {
   body { background: #fff; }
-  .top, .inbox, .run, .tabs, .doc-actions, #tab-exhibits, #tab-packet { display: none !important; }
+  @page { margin: 0.8in 0.75in; }
+  .top, .inbox, .run, .tabs, .doc-actions, .file-head, #tab-exhibits, #tab-packet, .tip { display: none !important; }
+  .cite { border-width: 0.6px; }
   .shell { display: block; }
   .file { padding: 0; }
   #tab-brief { display: block !important; }
