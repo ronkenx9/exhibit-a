@@ -2,6 +2,10 @@
 
 **Chargeback defense that can't make things up.** Built on [SERV Reasoning](https://docs.openserv.ai/serv-reasoning/introduction) for the SERV Hackathon, Edition 01 (Open Track).
 
+**Live:** https://exhibit-a-pi.vercel.app · **Demo video:** [demo/exhibit-a-demo.mp4](demo/exhibit-a-demo.mp4) (2:26)
+
+![Cited rebuttal with hover-to-verify citations](demo/01-cited-rebuttal.png)
+
 Merchants lose about 1 in 5 dollars they dispute to bad paperwork. The tools that write chargeback rebuttals with LLMs have one fatal flaw: an issuer analyst who catches a single invented fact throws out the whole response. EXHIBIT A is built around the opposite rule. **It can only argue from evidence it can quote.**
 
 ## What it does
