@@ -1,6 +1,6 @@
 const $ = (s, el = document) => el.querySelector(s);
 const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
-const money = (n) => `$${Number(n).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+const money = (n) => `${n < 0 ? "−" : ""}$${Math.abs(Number(n)).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 
 const store = {
   get(k, d) { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch { return d; } },
@@ -175,7 +175,7 @@ function verdictHtml(res) {
       <div><div class="k">Win likelihood</div><div class="v">${v.likelihood}%</div><div class="meter"><i style="width:0" data-w="${v.likelihood}"></i></div></div>
       <div><div class="k">Evidence coverage</div><div class="v">${v.coverage}/100</div><div class="meter"><i style="width:0" data-w="${v.coverage}"></i></div></div>
       <div><div class="k">Expected net</div><div class="v">${money(v.expectedNet)}</div></div>
-      <div><div class="k">Our fee if won</div><div class="v">${money(v.fee)}</div></div>
+      <div><div class="k">${fight ? "Our fee if won" : "Our fee"}</div><div class="v">${fight ? money(v.fee) : money(0)}</div></div>
     </div>
     <div class="v-note">${fight
       ? `Every required element is backed by a verified quote. Expected recovery ${money(v.expectedRecovery)} after the ${money(v.networkFee)} network fee.`
@@ -210,7 +210,7 @@ function renderBrief(res) {
     const tips = PREVENT[c.code] || [];
     el.innerHTML = `<div class="memo">
       <h2>Don't fight this one.</h2>
-      <p>The ${esc(res.rule.network)} ${esc(res.rule.code)} rules require evidence this file doesn't contain: <b>${res.requirements.filter((r) => r.required && !r.met).map((r) => esc(r.label)).join("; ")}</b>. An issuer rejects incomplete compelling evidence, so contesting spends ${money(res.verdict.networkFee)} to recover ${money(0)} in expectation.</p>
+      <p>The ${esc(res.rule.network)} ${esc(res.rule.code)} rules require evidence this file doesn't contain: <b>${res.requirements.filter((r) => r.required && !r.met).map((r) => esc(r.label)).join("; ")}</b>. An issuer rejects incomplete compelling evidence, so contesting costs ${money(res.verdict.networkFee)} against an expected recovery of ${money(res.verdict.expectedRecovery)} — a net loss of ${money(-res.verdict.expectedNet)}.</p>
       <p>EXHIBIT A charges nothing for this advice. Accept the dispute and close the loop with the cardholder.</p>
       ${tips.length ? `<h4 style="font:600 11px var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);margin-top:18px">Stop the next one</h4><ul>${tips.map((t) => `<li>${esc(t)}</li>`).join("")}</ul>` : ""}
     </div>`;
