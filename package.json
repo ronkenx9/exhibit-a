@@ -1,0 +1,12 @@
+{
+  "name": "exhibit-a",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Chargeback defense agent on SERV Reasoning that can only argue from evidence it can quote.",
+  "scripts": {
+    "dev": "node --env-file-if-exists=.env dev.js",
+    "test": "node --test test/*.test.js"
+  },
+  "engines": { "node": ">=20" }
+}

@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>EXHIBIT A — chargeback defense that can't make things up</title>
+<meta name="description" content="An agent on SERV Reasoning that fights chargebacks using only evidence it can quote verbatim. Every sentence cited. Every quote verified.">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter+Tight:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+<header class="top">
+  <div class="brand">
+    <span class="stamp-mark">A</span>
+    <div>
+      <div class="wordmark">EXHIBIT&nbsp;A</div>
+      <div class="tag">Chargeback defense that can't make things up.</div>
+    </div>
+  </div>
+  <div class="top-right">
+    <span id="live" class="pill"><i></i><span>SERV Reasoning</span></span>
+    <button class="ghost" id="howBtn">How it works</button>
+  </div>
+</header>
+
+<main class="shell">
+  <aside class="inbox">
+    <div class="inbox-head">
+      <h2>Open disputes</h2>
+      <button class="small" id="newBtn">+ New</button>
+    </div>
+    <ul id="caseList"></ul>
+    <div class="inbox-foot">
+      <div class="k">Pricing</div>
+      <div class="v">15% of recovered funds.<br>Nothing if we lose. Nothing if we tell you not to fight.</div>
+    </div>
+  </aside>
+
+  <section class="file" id="file">
+    <div class="file-head" id="fileHead"></div>
+    <nav class="tabs" id="tabs">
+      <button data-tab="exhibits" class="on">Exhibits</button>
+      <button data-tab="brief" disabled>Rebuttal</button>
+      <button data-tab="packet" disabled>Stripe packet</button>
+    </nav>
+    <div class="tab-body" id="tab-exhibits"></div>
+    <div class="tab-body hidden" id="tab-brief"></div>
+    <div class="tab-body hidden" id="tab-packet"></div>
+  </section>
+
+  <aside class="run">
+    <button class="primary" id="runBtn">Build the case</button>
+    <p class="run-note" id="runNote">SERV maps every exhibit to the card network's rules. Code verifies every quote. Nothing unverified reaches the issuer.</p>
+    <ol class="steps" id="steps"></ol>
+    <div id="verdict"></div>
+    <div id="reqs"></div>
+    <div id="audit"></div>
+  </aside>
+</main>
+
+<dialog id="howDlg">
+  <form method="dialog">
+    <h3>How EXHIBIT A works</h3>
+    <ol class="how">
+      <li><b>Screen.</b> Evidence is data, never instructions. Text in an exhibit that addresses an AI is quarantined before any model sees it.</li>
+      <li><b>Map · SERV Reasoning.</b> A Kronos-audited reasoning prompt maps each exhibit to the reason code's required elements, with SERV prompt guard on and a strict JSON schema. Every fact must carry a verbatim quote.</li>
+      <li><b>Verify · code.</b> Each quote is matched against the original exhibit. A quote that isn't there, or that comes from quarantined text, is struck.</li>
+      <li><b>Verdict · code.</b> Coverage of required elements decides FIGHT or ACCEPT, with the economics. The model never decides.</li>
+      <li><b>Draft · SERV Shadow Agent.</b> The rebuttal is written from verified facts only; SERV's shadow agent validates that every sentence cites an exhibit and nothing is conceded, and revises if not.</li>
+      <li><b>Lint · code.</b> Any sentence without a citation to a verified exhibit is struck from the packet. Output maps straight onto Stripe's dispute-evidence fields.</li>
+    </ol>
+    <button class="primary">Got it</button>
+  </form>
+</dialog>
+
+<dialog id="newDlg">
+  <form id="newForm" method="dialog">
+    <h3>New dispute</h3>
+    <details class="import">
+      <summary>Import a Stripe dispute object</summary>
+      <textarea id="stripeJson" rows="6" placeholder='Paste the JSON from GET /v1/disputes/dp_… (reason, amount, evidence)'></textarea>
+      <button type="button" class="small" id="importBtn">Import</button>
+      <span class="err" id="importErr"></span>
+    </details>
+    <div class="grid2">
+      <label>Merchant<input name="merchant" required placeholder="Your store"></label>
+      <label>Cardholder<input name="cardholder" placeholder="Name on the dispute"></label>
+      <label>Reason code<select name="rule" id="ruleSel"></select></label>
+      <label>Amount (USD)<input name="amount" type="number" step="0.01" min="0.01" required></label>
+    </div>
+    <label>Cardholder claim<input name="summary" placeholder="What the cardholder says happened"></label>
+    <div id="exFields"></div>
+    <button type="button" class="small" id="addEx">+ Add exhibit</button>
+    <div class="dlg-actions">
+      <button value="cancel" formnovalidate class="ghost">Cancel</button>
+      <button id="createBtn" class="primary" value="create">Open case</button>
+    </div>
+  </form>
+</dialog>
+
+<div id="tip" class="tip hidden"></div>
+<script type="module" src="/app.js"></script>
+</body>
+</html>
