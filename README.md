@@ -8,6 +8,31 @@
 
 Merchants lose about 1 in 5 dollars they dispute to bad paperwork. The tools that write chargeback rebuttals with LLMs have one fatal flaw: an issuer analyst who catches a single invented fact throws out the whole response. EXHIBIT A is built around the opposite rule. **It can only argue from evidence it can quote.**
 
+## Judge it in 60 seconds
+
+1. Open https://exhibit-a-pi.vercel.app. **Nimbus Coffee Co.** is selected.
+2. Scroll to exhibit **E4**: the cardholder's ticket hides an instruction telling any AI to concede.
+3. Click **Build the case**. Watch E4 get quarantined, quotes light up in E1–E3 as code verifies them, and the FIGHT stamp land.
+4. Open **Rebuttal** and hover any red citation: you see the exact quote behind it. Open **Stripe packet** for the evidence JSON.
+5. Pick **Hollow Pine Candles** and build it: EXHIBIT A says don't fight, and why.
+6. Try **+ New** with your own dispute text, or paste a Stripe dispute object.
+
+## Architecture
+
+```mermaid
+flowchart LR
+  A[Dispute + exhibits] --> B[Instruction screen<br/><i>code</i>]
+  B -->|quarantined exhibits| C[Evidence map<br/><b>SERV</b> gpt-5.4-mini-serv-kronos<br/>prompt guard · strict JSON]
+  C --> D[Quote verification<br/><i>code</i>]
+  D --> E{Verdict<br/><i>code</i>}
+  E -->|ACCEPT| F[Accept memo + prevention tips]
+  E -->|FIGHT| G[Rebuttal draft<br/><b>SERV</b> shadow agent · prompt guard]
+  G --> H[Citation lint<br/><i>code</i>]
+  H --> I[PDF brief + Stripe evidence JSON]
+```
+
+Every box marked *code* is deterministic and covered by `npm test`. Every **SERV** call is recorded in the in-app audit trail with model, SERV features, tokens, latency and cost.
+
 ## What it does
 
 Drop in a dispute (or paste a Stripe dispute object) plus your evidence: order records, carrier tracking, emails, logs. EXHIBIT A:
