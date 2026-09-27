@@ -196,7 +196,7 @@ function verdictHtml(res) {
       <div><div class="k">${fight ? "Our fee if won" : "Our fee"}</div><div class="v">${fight ? money(v.fee) : money(0)}</div></div>
     </div>
     <div class="v-note">${fight
-      ? `Every required element is backed by a verified quote. Expected recovery ${money(v.expectedRecovery)} after the ${money(v.networkFee)} network fee.`
+      ? `Every required element is backed by a verified quote. Expected recovery ${money(v.expectedRecovery)}; the ${money(v.networkFee)} network fee is already counted in expected net.`
       : `Missing required evidence: ${v.missingRequired.map((k) => ruleOf(state.current).requirements.find((r) => r.key === k)?.label).join("; ")}. Fighting costs ${money(v.networkFee)} and would likely lose.`}</div>
   </div>`;
 }
