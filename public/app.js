@@ -148,9 +148,11 @@ function flashExhibit(id) {
 
 // ---------- run column ----------
 
+const seenSteps = new Set();
 function renderSteps() {
   $("#steps").innerHTML = state.steps.map((s) => `
-    <li class="step ${s.status}"><span class="dot"></span><div><div class="t">${esc(s.title)}</div><div class="d">${esc(s.detail || "")}</div></div></li>`).join("");
+    <li class="step ${s.status} ${seenSteps.has(s.id) ? "" : "fresh"}"><span class="dot"></span><div><div class="t">${esc(s.title)}</div><div class="d">${esc(s.detail || "")}</div></div></li>`).join("");
+  state.steps.forEach((s) => seenSteps.add(s.id));
 }
 
 function renderRun(res) {
@@ -276,6 +278,7 @@ async function run() {
   const c = state.current;
   state.running = true;
   state.steps = [];
+  seenSteps.clear();
   delete state.results[c.id];
   renderRun(null); renderBrief(null); renderPacket(null); renderExhibits(null); setTab("exhibits");
   document.querySelectorAll("#tabs button").forEach((b) => b.classList.remove("ready"));

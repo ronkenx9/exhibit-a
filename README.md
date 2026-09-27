@@ -32,6 +32,7 @@ A chargeback rebuttal is the textbook case for bounded reasoning: the rules are 
 cp .env.example .env   # add SERV_API_KEY from console.openserv.ai
 npm run dev            # http://localhost:5174
 npm test               # deterministic guardrail tests
+node --env-file=.env scripts/run-case.mjs dp_1QkN8x   # run one case from the CLI
 ```
 
 No dependencies. Node 20+. Deploys to Vercel as-is (`api/` functions + `public/`).

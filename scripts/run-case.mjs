@@ -1,5 +1,5 @@
-import { runCase } from "./lib/pipeline.js";
-import { getCase } from "./lib/cases.js";
+import { runCase } from "../lib/pipeline.js";
+import { getCase } from "../lib/cases.js";
 const c = getCase(process.argv[2]);
 const t0 = Date.now();
 try {
